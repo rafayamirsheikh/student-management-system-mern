@@ -28,15 +28,16 @@ let connectionPromise;
 
 async function connectDB() {
   if (mongoose.connection.readyState === 1) return;
-
-  if (!process.env.MONGO_URI) {
+   
+   const uri = process.env.MONGO_URI;
+    if (!uri)  {
     throw new Error("MONGO_URI is missing in Vercel Environment Variables");
   }
 
   if (!connectionPromise) {
-    connectionPromise = mongoose.connect(process.env.MONGO_URI).catch((err) => {
+    connectionPromise = mongoose.connect(uri).catch((error) => {
       connectionPromise = null;
-      throw err;
+      throw error;
     });
   }
 
